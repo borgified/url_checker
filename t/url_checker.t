@@ -1,10 +1,9 @@
 use Test::More;
 use LWP::UserAgent;
 
-open(INPUT,"../free-programming-books.md");
+open(INPUT,"free-programming-books.md");
 
 
-#BEGIN {plan tests => 3};
 BEGIN; 
 
 my $ua = LWP::UserAgent->new;
