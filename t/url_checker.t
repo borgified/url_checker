@@ -15,3 +15,8 @@ $req = HTTP::Request->new(GET => 'http://www.perlimeme.org');
 $res = $ua->request($req);
 
 ok($res->is_success,$res->status_line);
+
+$req = HTTP::Request->new(GET => 'http://www.spathiwa.com');
+$res = $ua->request($req);
+
+ok($res->is_success,$res->status_line);
