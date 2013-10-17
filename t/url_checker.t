@@ -1,7 +1,7 @@
 use Test::More;
 use LWP::UserAgent;
 
-BEGIN {plan tests => 2};
+BEGIN {plan tests => 3};
 
 my $ua = LWP::UserAgent->new;
 $ua->agent("Mozilla/8.0");
