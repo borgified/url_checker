@@ -3,6 +3,6 @@
 use warnings;
 use strict;
 
-open(OUTPUT,">> output_cron");
+open(OUTPUT,">> ${OPENSHIFT_LOG_DIR}/output_cron.log");
 
 print OUTPUT localtime()."\n";
