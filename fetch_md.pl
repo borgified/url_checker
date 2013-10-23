@@ -13,11 +13,17 @@ use strict;
 
 use LWP::Simple;
 
-my $readme = get('https://raw.github.com/vhf/free-programming-books/master/README.md');
+my $url='https://raw.github.com/vhf/free-programming-books';
+
+my $readme = get($url."/master/README.md");
 
 my @lines=split(/\n/,$readme);
 foreach my $line (@lines){
 	if($line=~/ (\bfree-programming-books-?.*?\.md\b)/){
-		print $1."\n";
+		print $url."/master/".$1."\n";
 	}
 }
+
+#raw files have the form:
+#https://raw.github.com/vhf/free-programming-books/master/free-programming-books-ch.md
+
