@@ -1,9 +1,10 @@
-This version is meant to be run as an app in @openshift.
-The plan is to run it once a day as a cron job.
-It will look at all free-programming-book-*.md files in https://github.com/vhf/free-programming-books git repository and check each one for bad urls.
-Assumes a line has maximum of (1) url.
-If a bad url is found, it will create a pull request automatically.
-After processing a file, it will regenerate the table of contents using http://doctoc.herokuapp.com.
+#Project Outline
+- This version is meant to be run as an app in @openshift.
+- The plan is to run it once a day as a cron job.
+- It will look at all free-programming-book-*.md files in https://github.com/vhf/free-programming-books and check each one for bad urls.
+- Assumes a line has maximum of (1) url.
+- If a bad url is found, create a pull request automatically.
+- After processing a file, it will regenerate the table of contents using http://doctoc.herokuapp.com.
 
 
 Future:
