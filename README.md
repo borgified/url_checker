@@ -11,3 +11,7 @@ Future:
 - sort urls in alphabetical order
 - store url check results in a database to get a historical view
 - save checksum of http payload after GET, create issue if checksum is found to be inconsistent
+=======
+The OpenShift `perl` cartridge documentation can be found at:
+
+https://github.com/openshift/origin-server/tree/master/cartridges/openshift-origin-cartridge-perl/README.md
