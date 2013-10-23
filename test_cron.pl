@@ -5,4 +5,4 @@ use strict;
 
 open(OUTPUT,">> output_cron");
 
-print OUTPUT localtime."\n";
+print OUTPUT localtime()."\n";
