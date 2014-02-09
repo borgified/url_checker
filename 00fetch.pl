@@ -70,12 +70,20 @@ foreach my $book (keys %db){
 sub test_url{
 	my $retval;
 	my $url = shift @_;
-	my $req = HTTP::Request->new(GET => $url);
+	my $req = HTTP::Request->new(HEAD => $url);
 	my $res = $ua->request($req);
 	if($res->is_success){
 		$retval = "good";
 	}else{
-		$retval = $res->status_line." $url";
+		#try one more time with GET
+		$req = HTTP::Request->new(GET => $url);
+		$ua->timeout(360); #wait 6 mins in case it's really slow
+		$res = $ua->request($req);
+		if($res->is_success){
+			$retval = "good";
+		}else{
+			$retval = $res->status_line." $url";
+		}
 	}
 	return $retval;
 }
