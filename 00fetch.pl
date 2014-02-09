@@ -38,6 +38,8 @@ $ua->timeout(120);
 $ua->show_progress(1);
 
 my $i = Pithub::Issues->new( token => $config{'token'} );
+my $c = Pithub::Repos::Commits->new( token => $config{'token'});
+
 
 foreach my $book (keys %db){
 	my @content = split("\n", $db{$book}{'content'});
@@ -52,11 +54,26 @@ foreach my $book (keys %db){
 					$lang=$1;
 				}
 
+				#figure out which commit added this bad url
+				chdir("free-programming-books");
+				my $commit = `git log -S$url --reverse --format=%H | head -1`;
+
+				#figure out the commit's author's login
+				my $cc = $c->get(
+					user => 'vhf',
+					repo => 'free-programming-books',
+					sha  => $commit,
+				);
+
+				my $committer = $cc->content->{author}->{login};
+				$committer = $committer."aaa";
+
+
 				my $result = $i->create(
 					user => 'borgified',
 					repo => 'test_issue',
 					data => {
-						body      => $test,
+						body      => "$test \nIt was added by \@$committer in $commit.",
 						labels    => [ $lang ],
 						title     => $url,
 					}
@@ -82,7 +99,7 @@ sub test_url{
 		if($res->is_success){
 			$retval = "good";
 		}else{
-			$retval = $res->status_line." $url";
+			$retval = $res->status_line."\n$url";
 		}
 	}
 	return $retval;
