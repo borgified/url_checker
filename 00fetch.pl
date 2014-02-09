@@ -34,7 +34,7 @@ foreach my $book (@books){
 
 my $ua = LWP::UserAgent->new;
 $ua->agent("Mozilla/8.0");
-$ua->timeout(10);
+$ua->timeout(120);
 $ua->show_progress(1);
 
 my $i = Pithub::Issues->new( token => $config{'token'} );
@@ -70,7 +70,7 @@ foreach my $book (keys %db){
 sub test_url{
 	my $retval;
 	my $url = shift @_;
-	my $req = HTTP::Request->new(HEAD => $url);
+	my $req = HTTP::Request->new(GET => $url);
 	my $res = $ua->request($req);
 	if($res->is_success){
 		$retval = "good";
