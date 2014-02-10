@@ -55,7 +55,8 @@ foreach my $book (keys %db){
 				}
 
 				#figure out which commit added this bad url
-				my $commit = `cd free-programming-books;git log -S$url --reverse --format=%H | head -1`;
+				my $commit = `git log -S$url --reverse --format=%H | head -1`;
+				chomp($commit);
 
 				#figure out the commit's author's login
 				my $cc = $c->get(
@@ -65,15 +66,13 @@ foreach my $book (keys %db){
 				);
 
 				my $committer = $cc->content->{author}->{login};
-				$committer = $committer."aaa";
-
 
 				my $result = $i->create(
 					user => 'borgified',
 					repo => 'test_issue',
 					data => {
 						body      => "$test \nIt was added by \@$committer in $commit.",
-						labels    => [ $lang ],
+						labels    => [ $lang, 'url_checker' ],
 						title     => $url,
 					}
 				);

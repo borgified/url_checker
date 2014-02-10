@@ -12,7 +12,8 @@ my $result = $c->get(
 	user => 'vhf',
 	repo => 'free-programming-books',
 	#sha  => 'bce75a0752d7de3e1042b84d7227f4aeeeff4dc5',
-	sha  => '5f0dbffe66663ef105e4de524c71052bc3beeded',
+	#sha  => '5f0dbffe66663ef105e4de524c71052bc3beeded',
+	sha  => '1764a9a7c587e026e4e276726eaa204e0f9778c4',
 );
 
 print $result->content->{author}->{login};
