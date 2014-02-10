@@ -55,8 +55,7 @@ foreach my $book (keys %db){
 				}
 
 				#figure out which commit added this bad url
-				chdir("free-programming-books");
-				my $commit = `git log -S$url --reverse --format=%H | head -1`;
+				my $commit = `cd free-programming-books;git log -S$url --reverse --format=%H | head -1`;
 
 				#figure out the commit's author's login
 				my $cc = $c->get(
