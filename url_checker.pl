@@ -33,7 +33,7 @@ foreach my $book (@books){
 }
 
 my $ua = LWP::UserAgent->new;
-$ua->agent("Mozilla/8.0");
+$ua->agent("Mozilla/5.0");
 $ua->timeout(120);
 $ua->show_progress(1);
 
@@ -68,8 +68,10 @@ foreach my $book (keys %db){
 				my $committer = $cc->content->{author}->{login};
 
 				my $result = $i->create(
-					user => 'vhf',
-					repo => 'free-programming-books',
+					#user => 'vhf',
+					#repo => 'free-programming-books',
+					user => 'borgified',
+					repo => 'test_issue',
 					data => {
 						body      => "$test \nIt was added by \@$committer in $commit.",
 						labels    => [ $lang, 'url_checker' ],
