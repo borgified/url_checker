@@ -40,6 +40,34 @@ $ua->show_progress(1);
 my $i = Pithub::Issues->new( token => $config{'token'} );
 my $c = Pithub::Repos::Commits->new( token => $config{'token'});
 
+#gather previously created issues still open so we dont recreate them
+my %issues;
+my $openissues = $i->list(
+	### borgified/test_issue is a testing repo
+	###
+	###
+	user    => 'borgified',
+	repo    => 'test_issue',
+	###
+	###
+	params => {
+		state     => 'open',
+		#####
+		#####
+		#label should just look for 'url_checker' for the prod version
+		#####
+		labels    => ['url_checker','ja'],
+		#####
+		#####
+		#####
+	}
+);
+
+while ( my $row = $openissues->next) {
+	#the bad url is in the title
+	#print $row->{title},"\n";
+	$issues{$row->{title}}=0;
+}
 
 foreach my $book (keys %db){
 	my @content = split("\n", $db{$book}{'content'});
@@ -48,7 +76,11 @@ foreach my $book (keys %db){
 			#print "$1\n";
 			my $url=$1;
 			my $test = &test_url($url);
-			if($test ne 'good'){
+
+			## create issue only if the url was tested bad AND it doesnt 
+			## already exist as an open issue.
+
+			if($test ne 'good' && !exists($issues{$url}) ){
 				my $lang="en";
 				if($book =~ /free-programming-books-(.*)\.md/){
 					$lang=$1;
@@ -67,11 +99,25 @@ foreach my $book (keys %db){
 
 				my $committer = $cc->content->{author}->{login};
 
+				###
+				###
+				### alter committers name for testing so we dont bother them
+				$committer = $committer."klajdfl";
+				###
+				###
+				###
+
 				my $result = $i->create(
 					#user => 'vhf',
 					#repo => 'free-programming-books',
+					###
+					### borgified/test_issue is a testing repo
+					###
+					###
 					user => 'borgified',
 					repo => 'test_issue',
+					###
+					###
 					data => {
 						body      => "$test \nIt was added by \@$committer in $commit.",
 						labels    => [ $lang, 'url_checker' ],
