@@ -2,7 +2,7 @@
 
 use warnings;
 use strict;
-use Digest::SHA1 qw/sha1_hex/;
+#use Digest::SHA1 qw/sha1_hex/;
 use LWP::UserAgent;
 use Pithub;
 
@@ -33,14 +33,14 @@ foreach my $book (@books){
 	my $content = <FILE>;
 	close FILE;
 	#print sha1_hex($content)," $book\n";
-	my $sha = sha1_hex($content);
+#	my $sha = sha1_hex($content);
 
 
 	#created a sha of each book. not sure what i want to do with it yet.
 	#the intention was to check if a book changed and avoid check if 
 	#there was no change but it looks like we should check all the urls
 	#regardless.
-	$db{$book}{"sha"}=$sha;
+#	$db{$book}{"sha"}=$sha;
 	$db{$book}{"content"}=$content;
 }
 
