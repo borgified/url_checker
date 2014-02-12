@@ -53,15 +53,20 @@ my $i = Pithub::Issues->new( token => $config{'token'} );
 my $c = Pithub::Repos::Commits->new( token => $config{'token'});
 
 #gather previously created issues still open so we dont recreate them
+
+#need to do some work here since we change strategy
+#first need to drastically reduce the number of false positives
+#store false positives in a gist?
+
 my %issues;
 my $openissues = $i->list(
 	### borgified/test_issue is a testing repo
 	###
 	###
-#	user    => 'borgified',
-#	repo    => 'test_issue',
-	user    => 'vhf',
-	repo    => 'free-programming-books',
+	user    => 'borgified',
+	repo    => 'test_issue',
+#	user    => 'vhf',
+#	repo    => 'free-programming-books',
 	###
 	###
 	params => {
@@ -87,6 +92,9 @@ while ( my $row = $openissues->next) {
 foreach my $book (keys %db){
 	my @content = split("\n", $db{$book}{'content'});
 	foreach my $line (@content){
+
+		# THIS IS THE PART THAT NEEDS TO BE FIXED TO ACCOUNT FOR PARENS in the url
+
 		if($line =~ /\[.*\].*\(.*(http:\/\/.*?)\)/){
 			#print "$1\n";
 			my $url=$1;
@@ -120,21 +128,29 @@ foreach my $book (keys %db){
 
 				###
 				###
-				### alter committers name for testing so we dont bother them
-#				$committer = $committer."klajdfl";
+				### mangle committers name for testing so we dont bother them
+				$committer = $committer."klajdfl";
 				###
 				###
 				###
 
+
+				# PROBABLY DONT WANT TO CREATE SEPARATE ISSUE FOR EACH PROBLEM SO THIS
+				# WILL CHANGE
+
 				my $result = $i->create(
-					user => 'vhf',
-					repo => 'free-programming-books',
+					###
+					###
+					###
+					###
+#					user => 'vhf',
+#					repo => 'free-programming-books',
 					###
 					### borgified/test_issue is a testing repo
 					###
 					###
-#					user => 'borgified',
-#					repo => 'test_issue',
+					user => 'borgified',
+					repo => 'test_issue',
 					###
 					###
 					data => {
@@ -154,6 +170,10 @@ sub test_url{
 	my $url = shift @_;
 	my $req = HTTP::Request->new(HEAD => $url);
 	my $res = $ua->request($req);
+
+
+	### CHANGE HERE TO THE MAKE HE CHECK LESS STRINGENT 
+
 	if($res->is_success){
 		$retval = "good";
 	}else{
