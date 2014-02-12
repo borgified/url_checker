@@ -10,7 +10,8 @@ my %config = do '/secret/github.config';
 
 if(-d "free-programming-books"){
 	chdir("free-programming-books");
-	system("git pull");
+	#grab the latest changes
+	system("git pull origin master");
 	chdir("../.");
 }else{
 	system("git clone https://github.com/vhf/free-programming-books.git");
