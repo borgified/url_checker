@@ -20,6 +20,11 @@ if(-d "free-programming-books"){
 chdir("free-programming-books");
 my @books = <free-programming-books*.md>;
 
+#gotta add 2 more books that dont conform to the usual naming convention
+push(@books,'free-programming-interactive-tutorials-en.md');
+push(@books,'javascript-frameworks-resources.md');
+
+
 my %db;
 
 foreach my $book (@books){
@@ -94,6 +99,10 @@ foreach my $book (keys %db){
 				my $lang="en";
 				if($book =~ /free-programming-books-(.*)\.md/){
 					$lang=$1;
+				}elsif($book eq 'javascript-frameworks-resources.md'){
+					$lang='jfr';
+				}elsif($book eq 'free-programming-interactive-tutorials-en.md'){
+					$lang='fpite';
 				}
 
 				#figure out which commit added this bad url
