@@ -1,4 +1,5 @@
 #!/usr/bin/env perl
+
 use warnings;
 use strict;
 use Digest::SHA1 qw/sha1_hex/;
@@ -51,8 +52,10 @@ my $openissues = $i->list(
 	### borgified/test_issue is a testing repo
 	###
 	###
-	user    => 'borgified',
-	repo    => 'test_issue',
+#	user    => 'borgified',
+#	repo    => 'test_issue',
+	user    => 'vhf',
+	repo    => 'free-programming-books',
 	###
 	###
 	params => {
@@ -61,7 +64,8 @@ my $openissues = $i->list(
 		#####
 		#label should just look for 'url_checker' for the prod version
 		#####
-		labels    => ['url_checker','ja'],
+#		labels    => ['url_checker','ja'],
+		labels    => ['url_checker'],
 		#####
 		#####
 		#####
@@ -95,32 +99,32 @@ foreach my $book (keys %db){
 				my $commit = `git log -S$url --reverse --format=%H | head -1`;
 				chomp($commit);
 
-				#figure out the commit's author's login
+				#figure out the commit's author's login so we take a closer
+				#look at this single commit and look for the login info
 				my $cc = $c->get(
 					user => 'vhf',
 					repo => 'free-programming-books',
 					sha  => $commit,
 				);
-
 				my $committer = $cc->content->{author}->{login};
 
 				###
 				###
 				### alter committers name for testing so we dont bother them
-				$committer = $committer."klajdfl";
+#				$committer = $committer."klajdfl";
 				###
 				###
 				###
 
 				my $result = $i->create(
-					#user => 'vhf',
-					#repo => 'free-programming-books',
+					user => 'vhf',
+					repo => 'free-programming-books',
 					###
 					### borgified/test_issue is a testing repo
 					###
 					###
-					user => 'borgified',
-					repo => 'test_issue',
+#					user => 'borgified',
+#					repo => 'test_issue',
 					###
 					###
 					data => {
