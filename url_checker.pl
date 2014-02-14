@@ -53,7 +53,7 @@ foreach my $book (keys %db){
 			my $test = &test_url($url);
 
 
-			if($test ne 'good' && !exists($issues{$url}) ){
+			if($test ne 'good'){
 				my $lang="en";
 				if($book =~ /free-programming-books-(.*)\.md/){
 					$lang=$1;
