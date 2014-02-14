@@ -32,15 +32,6 @@ foreach my $book (@books){
 	open FILE, "$book" or die "Couldn't open file: $!";
 	my $content = <FILE>;
 	close FILE;
-	#print sha1_hex($content)," $book\n";
-#	my $sha = sha1_hex($content);
-
-
-	#created a sha of each book. not sure what i want to do with it yet.
-	#the intention was to check if a book changed and avoid check if 
-	#there was no change but it looks like we should check all the urls
-	#regardless.
-#	$db{$book}{"sha"}=$sha;
 	$db{$book}{"content"}=$content;
 }
 
