@@ -37,7 +37,7 @@ foreach my $book (@books){
 my $ua = LWP::UserAgent->new;
 $ua->agent("Mozilla/5.0");
 $ua->timeout(120);
-$ua->show_progress(1);
+#$ua->show_progress(1);
 
 my $c = Pithub::Repos::Commits->new( token => $config{'token'});
 
@@ -52,8 +52,6 @@ foreach my $book (keys %db){
 			my $url=$1;
 			my $test = &test_url($url);
 
-			## create issue only if the url was tested bad AND it doesnt 
-			## already exist as an open issue.
 
 			if($test ne 'good' && !exists($issues{$url}) ){
 				my $lang="en";
@@ -78,13 +76,6 @@ foreach my $book (keys %db){
 				);
 				my $committer = $cc->content->{author}->{login};
 
-				###
-				###
-				### mangle committers name for testing so we dont bother them
-				$committer = $committer."klajdfl";
-				###
-				###
-				###
 				print "$test\nIt was added by \@$committer in $commit. label: $lang\t title: $url\n";
 
 			}
@@ -97,7 +88,6 @@ sub test_url{
 	my $url = shift @_;
 	my $req = HTTP::Request->new(HEAD => $url);
 	my $res = $ua->request($req);
-
 
 	### CHANGE HERE TO THE MAKE HE CHECK LESS STRINGENT 
 
