@@ -133,32 +133,7 @@ foreach my $book (keys %db){
 				###
 				###
 				###
-
-
-				# PROBABLY DONT WANT TO CREATE SEPARATE ISSUE FOR EACH PROBLEM SO THIS
-				# WILL CHANGE
-
-				my $result = $i->create(
-					###
-					###
-					###
-					###
-#					user => 'vhf',
-#					repo => 'free-programming-books',
-					###
-					### borgified/test_issue is a testing repo
-					###
-					###
-					user => 'borgified',
-					repo => 'test_issue',
-					###
-					###
-					data => {
-						body      => "$test \nIt was added by \@$committer in $commit.",
-						labels    => [ $lang, 'url_checker' ],
-						title     => $url,
-					}
-				);
+				print "$test\nIt was added by \@$committer in $commit. label: $lang\t title: $url\n";
 
 			}
 		}
