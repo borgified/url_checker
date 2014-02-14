@@ -6,6 +6,8 @@ use strict;
 use LWP::UserAgent;
 use Pithub;
 
+use URI::Find;
+
 my %config = do '/secret/github.config';
 
 if(-d "free-programming-books"){
@@ -41,68 +43,81 @@ $ua->timeout(120);
 
 my $c = Pithub::Repos::Commits->new( token => $config{'token'});
 
+my @uris;
+
 foreach my $book (keys %db){
 	my @content = split("\n", $db{$book}{'content'});
 	foreach my $line (@content){
 
-		# THIS IS THE PART THAT NEEDS TO BE FIXED TO ACCOUNT FOR PARENS in the url
+		my $finder = URI::Find->new( sub {
+				my($uri) = shift;
+				push @uris, $uri;
+			});
 
-		if($line =~ /\[.*\].*\(.*(http:\/\/.*?)\)/){
-			#print "$1\n";
-			my $url=$1;
-			my $test = &test_url($url);
+		$finder->find(\$line);
 
-
-			if($test ne 'good'){
-				my $lang="en";
-				if($book =~ /free-programming-books-(.*)\.md/){
-					$lang=$1;
-				}elsif($book eq 'javascript-frameworks-resources.md'){
-					$lang='jfr';
-				}elsif($book eq 'free-programming-interactive-tutorials-en.md'){
-					$lang='fpite';
-				}
-
-				#figure out which commit added this bad url
-				my $commit = `git log -S$url --reverse --format=%H | head -1`;
-				chomp($commit);
-
-				#figure out the commit's author's login so we take a closer
-				#look at this single commit and look for the login info
-				my $cc = $c->get(
-					user => 'vhf',
-					repo => 'free-programming-books',
-					sha  => $commit,
-				);
-				my $committer = $cc->content->{author}->{login};
-
-				print "$test\nIt was added by \@$committer in $commit. label: $lang\t title: $url\n";
-
-			}
-		}
 	}
 }
 
+foreach my $uri (@uris){
+	print "$uri\n";
+}
+
+__END__
+
+
+my $test = &test_url($url);
+
+if($test ne 'good'){
+my $lang="en";
+if($book =~ /free-programming-books-(.*)\.md/){
+$lang=$1;
+}elsif($book eq 'javascript-frameworks-resources.md'){
+$lang='jfr';
+}elsif($book eq 'free-programming-interactive-tutorials-en.md'){
+$lang='fpite';
+}
+
+#figure out which commit added this bad url
+my $commit = `git log -S$url --reverse --format=%H | head -1`;
+chomp($commit);
+
+#figure out the commit's author's login so we take a closer
+#look at this single commit and look for the login info
+my $cc = $c->get(
+user => 'vhf',
+repo => 'free-programming-books',
+sha  => $commit,
+);
+my $committer = $cc->content->{author}->{login};
+
+print "$test\nIt was added by \@$committer in $commit. label: $lang\t title: $url\n";
+
+}
+}
+}
+}
+
 sub test_url{
-	my $retval;
-	my $url = shift @_;
-	my $req = HTTP::Request->new(HEAD => $url);
-	my $res = $ua->request($req);
+my $retval;
+my $url = shift @_;
+my $req = HTTP::Request->new(HEAD => $url);
+my $res = $ua->request($req);
 
-	### CHANGE HERE TO THE MAKE HE CHECK LESS STRINGENT 
+### CHANGE HERE TO THE MAKE HE CHECK LESS STRINGENT 
 
-	if($res->is_success){
-		$retval = "good";
-	}else{
-		#try one more time with GET
-		$req = HTTP::Request->new(GET => $url);
-		$ua->timeout(360); #wait 6 mins in case it's really slow
-		$res = $ua->request($req);
-		if($res->is_success){
-			$retval = "good";
-		}else{
-			$retval = $res->status_line."\n$url";
-		}
-	}
-	return $retval;
+if($res->is_success){
+$retval = "good";
+}else{
+#try one more time with GET
+$req = HTTP::Request->new(GET => $url);
+$ua->timeout(360); #wait 6 mins in case it's really slow
+$res = $ua->request($req);
+if($res->is_success){
+$retval = "good";
+}else{
+$retval = $res->status_line."\n$url";
+}
+}
+return $retval;
 }
