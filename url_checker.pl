@@ -24,7 +24,6 @@ my @books = <free-programming-books*.md>;
 push(@books,'free-programming-interactive-tutorials-en.md');
 push(@books,'javascript-frameworks-resources.md');
 
-
 my %db;
 
 foreach my $book (@books){
@@ -40,45 +39,7 @@ $ua->agent("Mozilla/5.0");
 $ua->timeout(120);
 $ua->show_progress(1);
 
-my $i = Pithub::Issues->new( token => $config{'token'} );
 my $c = Pithub::Repos::Commits->new( token => $config{'token'});
-
-#gather previously created issues still open so we dont recreate them
-
-#need to do some work here since we change strategy
-#first need to drastically reduce the number of false positives
-#store false positives in a gist?
-
-my %issues;
-my $openissues = $i->list(
-	### borgified/test_issue is a testing repo
-	###
-	###
-	user    => 'borgified',
-	repo    => 'test_issue',
-#	user    => 'vhf',
-#	repo    => 'free-programming-books',
-	###
-	###
-	params => {
-		state     => 'open',
-		#####
-		#####
-		#label should just look for 'url_checker' for the prod version
-		#####
-#		labels    => ['url_checker','ja'],
-		labels    => ['url_checker'],
-		#####
-		#####
-		#####
-	}
-);
-
-while ( my $row = $openissues->next) {
-	#the bad url is in the title
-	#print $row->{title},"\n";
-	$issues{$row->{title}}=0;
-}
 
 foreach my $book (keys %db){
 	my @content = split("\n", $db{$book}{'content'});
