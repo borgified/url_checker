@@ -2,13 +2,16 @@
 
 use warnings;
 use strict;
-#use Digest::SHA1 qw/sha1_hex/;
 use LWP::UserAgent;
 use Pithub;
 
 use URI::Find;
 
+#github accounts/passwords config
 my %config = do '/secret/github.config';
+
+#check if we have the original vhf/free-programming-books repo pulled down
+#if not, do it, if so, grab the latest version
 
 if(-d "free-programming-books"){
 	chdir("free-programming-books");
@@ -25,9 +28,12 @@ my @books = <free-programming-books*.md>;
 #gotta add 2 more books that dont conform to the usual naming convention
 push(@books,'free-programming-interactive-tutorials-en.md');
 push(@books,'javascript-frameworks-resources.md');
+# @books now contains all the different "books".md
+
 
 my %db;
 
+#read all the contents of each *.md file inside @books and put it into %db
 foreach my $book (@books){
 	local $/ = undef;
 	open FILE, "$book" or die "Couldn't open file: $!";
@@ -36,6 +42,7 @@ foreach my $book (@books){
 	$db{$book}{"content"}=$content;
 }
 
+#settings for checking url
 my $ua = LWP::UserAgent->new;
 $ua->agent("Mozilla/5.0");
 $ua->timeout(120);
@@ -43,12 +50,15 @@ $ua->timeout(120);
 
 my $c = Pithub::Repos::Commits->new( token => $config{'token'});
 
+# @uris contains all urls from all the books
 my @uris;
 
 foreach my $book (keys %db){
+	#all content from each book goes into @content, each array item = 1 line
 	my @content = split("\n", $db{$book}{'content'});
 	foreach my $line (@content){
-
+		#if there are more than one url in one line, this will detect it too and
+		#add them as separate entries into @uris
 		my $finder = URI::Find->new( sub {
 				my($uri) = shift;
 				push @uris, $uri;
