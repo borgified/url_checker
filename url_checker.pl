@@ -84,7 +84,7 @@ sub test_url{
 	my $req = HTTP::Request->new(HEAD => $url);
 	my $res = $ua->request($req);
 
-### CHANGE HERE TO THE MAKE HE CHECK LESS STRINGENT 
+### CHANGE HERE TO THE MAKE THE CHECK LESS STRINGENT 
 
 	if($res->is_success){
 		$retval = "good";
@@ -96,7 +96,7 @@ sub test_url{
 		if($res->is_success){
 			$retval = "good";
 		}else{
-			$retval = $res->status_line."\n$url";
+			$retval = $res->status_line;
 		}
 	}
 	return $retval;
