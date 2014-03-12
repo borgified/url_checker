@@ -73,6 +73,37 @@ foreach my $uri (@uris){
 	print "$uri\n";
 }
 
+
+# url testing here
+# input: one url
+# output: good if url is ok, http error if bad
+
+sub test_url{
+	my $retval;
+	my $url = shift @_;
+	my $req = HTTP::Request->new(HEAD => $url);
+	my $res = $ua->request($req);
+
+### CHANGE HERE TO THE MAKE HE CHECK LESS STRINGENT 
+
+	if($res->is_success){
+		$retval = "good";
+	}else{
+#try one more time with GET
+		$req = HTTP::Request->new(GET => $url);
+		$ua->timeout(360); #wait 6 mins in case it's really slow
+		$res = $ua->request($req);
+		if($res->is_success){
+			$retval = "good";
+		}else{
+			$retval = $res->status_line."\n$url";
+		}
+	}
+	return $retval;
+}
+
+
+
 __END__
 
 
