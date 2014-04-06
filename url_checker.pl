@@ -5,7 +5,7 @@ use strict;
 use LWP::UserAgent;
 use Pithub;
 
-use URI::Find;
+use URI::Find::UTF8;
 
 #github accounts/passwords config
 my %config = do '/secret/github.config';
@@ -62,7 +62,7 @@ foreach my $book (keys %db){
 	foreach my $line (@content){
 		#if there are more than one url in one line, this will detect it too and
 		#add them as separate entries into @uris
-		my $finder = URI::Find->new( sub {
+		my $finder = URI::Find::UTF8->new( sub {
 				my($uri) = shift;
 				push @uris, $uri;
 			});
