@@ -47,7 +47,7 @@ chdir("../.");
 
 #settings for checking url
 my $ua = LWP::UserAgent->new;
-$ua->agent("Mozilla/5.0");
+$ua->agent("Mozilla/5.0 (Windows; U; Windows NT 6.1; en-US; rv:1.9.2.13) Gecko/20101203 Firefox/3.6.13 GTB7.1");
 $ua->timeout(120);
 #$ua->show_progress(1);
 
@@ -74,7 +74,7 @@ foreach my $book (keys %db){
 
 my $number_of_uris=@uris;
 my $x=1;
-$|=1;
+$|=1; #flush output
 foreach my $uri (@uris){
 	my $result = &test_url($uri);
 	my $count="($x"."/"."$number_of_uris)";
@@ -82,7 +82,10 @@ foreach my $uri (@uris){
 	$x++;
 	#sleep 5; #wait 5 seconds before testing next url
 }
-$|=0;
+$|=0; #turn off output flush
+
+
+
 # url testing here
 # input: one url
 # output: good if url is ok, http error if bad
