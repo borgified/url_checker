@@ -33,6 +33,7 @@ push(@books,'javascript-frameworks-resources.md');
 
 my %db;
 
+
 #read all the contents of each *.md file inside @books and put it into %db
 foreach my $book (@books){
 	local $/ = undef;
@@ -41,6 +42,8 @@ foreach my $book (@books){
 	close FILE;
 	$db{$book}{"content"}=$content;
 }
+
+chdir("../.");
 
 #settings for checking url
 my $ua = LWP::UserAgent->new;
@@ -69,10 +72,21 @@ foreach my $book (keys %db){
 	}
 }
 
-foreach my $uri (@uris){
-	print "$uri\n";
-}
+open(OUTPUT, '>output.txt') or die "couldnt open $!";
 
+my $number_of_uris=@uris;
+my $x=1;
+foreach my $uri (@uris){
+	my $result = &test_url($uri);
+	my $count="($x"."/"."$number_of_uris)";
+	if($result ne 'good'){
+		print OUTPUT "$result $uri\n";
+	}
+	print "$count $result $uri\n";
+	$x++;
+	#sleep 5; #wait 5 seconds before testing next url
+}
+close(OUTPUT);
 
 # url testing here
 # input: one url
@@ -84,19 +98,19 @@ sub test_url{
 	my $req = HTTP::Request->new(HEAD => $url);
 	my $res = $ua->request($req);
 
-### CHANGE HERE TO THE MAKE HE CHECK LESS STRINGENT 
+### CHANGE HERE TO THE MAKE THE CHECK LESS STRINGENT 
 
 	if($res->is_success){
 		$retval = "good";
 	}else{
 #try one more time with GET
 		$req = HTTP::Request->new(GET => $url);
-		$ua->timeout(360); #wait 6 mins in case it's really slow
+		$ua->timeout(60); #wait 60 for the download
 		$res = $ua->request($req);
 		if($res->is_success){
 			$retval = "good";
 		}else{
-			$retval = $res->status_line."\n$url";
+			$retval = $res->status_line;
 		}
 	}
 	return $retval;
