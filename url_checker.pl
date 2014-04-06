@@ -72,22 +72,17 @@ foreach my $book (keys %db){
 	}
 }
 
-open(OUTPUT, '>output.txt') or die "couldnt open $!";
-
 my $number_of_uris=@uris;
 my $x=1;
+$|=1;
 foreach my $uri (@uris){
 	my $result = &test_url($uri);
 	my $count="($x"."/"."$number_of_uris)";
-	if($result ne 'good'){
-		print OUTPUT "$result $uri\n";
-	}
 	print "$count $result $uri\n";
 	$x++;
 	#sleep 5; #wait 5 seconds before testing next url
 }
-close(OUTPUT);
-
+$|=0;
 # url testing here
 # input: one url
 # output: good if url is ok, http error if bad
