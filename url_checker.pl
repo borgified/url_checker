@@ -4,6 +4,7 @@ use warnings;
 use strict;
 use LWP::UserAgent;
 use Pithub;
+use HTTP::Cookies;
 
 use URI::Find::UTF8;
 
@@ -45,10 +46,16 @@ foreach my $book (@books){
 
 chdir("../.");
 
+my $cookies = HTTP::Cookies->new(
+	file => "cookies.txt",
+	autosave => 1,
+);
+
 #settings for checking url
 my $ua = LWP::UserAgent->new;
 $ua->agent("Mozilla/5.0 (Windows; U; Windows NT 6.1; en-US; rv:1.9.2.13) Gecko/20101203 Firefox/3.6.13 GTB7.1");
 $ua->timeout(120);
+$ua->cookie_jar($cookies);
 #$ua->show_progress(1);
 
 my $c = Pithub::Repos::Commits->new( token => $config{'token'});
@@ -103,6 +110,7 @@ sub test_url{
 	}else{
 #try one more time with GET
 		$req = HTTP::Request->new(GET => $url);
+		$req->header(Accept => "text/html, */*;q=0.1", referer => 'http://google.com');
 		$ua->timeout(60); #wait 60 for the download
 		$res = $ua->request($req);
 		if($res->is_success){
