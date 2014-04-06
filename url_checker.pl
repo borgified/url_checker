@@ -101,6 +101,7 @@ sub test_url{
 	my $retval;
 	my $url = shift @_;
 	my $req = HTTP::Request->new(HEAD => $url);
+	$req->header(Accept => "text/html, */*;q=0.1", referer => 'http://google.com');
 	my $res = $ua->request($req);
 
 ### CHANGE HERE TO THE MAKE THE CHECK LESS STRINGENT 
