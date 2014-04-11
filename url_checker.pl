@@ -60,36 +60,28 @@ $ua->cookie_jar($cookies);
 
 my $c = Pithub::Repos::Commits->new( token => $config{'token'});
 
-# @uris contains all urls from all the books
-my @uris;
-
+$|=1;
 foreach my $book (keys %db){
-	#all content from each book goes into @content, each array item = 1 line
+
+	print "$book\n";
+
+#all content from each book goes into @content, each array item = 1 line
 	my @content = split("\n", $db{$book}{'content'});
+
 	foreach my $line (@content){
 		#if there are more than one url in one line, this will detect it too and
 		#add them as separate entries into @uris
 		my $finder = URI::Find::UTF8->new( sub {
 				my($uri) = shift;
-				push @uris, $uri;
+				my $result = &test_url($uri);
+				print "$result $uri\n";
 			});
 
 		$finder->find(\$line);
-
 	}
+	print "\n";
 }
-
-my $number_of_uris=@uris;
-my $x=1;
-$|=1; #flush output
-foreach my $uri (@uris){
-	my $result = &test_url($uri);
-	my $count="($x"."/"."$number_of_uris)";
-	print "$count $result $uri\n";
-	$x++;
-	#sleep 5; #wait 5 seconds before testing next url
-}
-$|=0; #turn off output flush
+$|=0;
 
 
 
