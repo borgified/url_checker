@@ -1,1 +1,2 @@
 ./url_checker.pl | tee output.txt
+grep -v good output.txt
