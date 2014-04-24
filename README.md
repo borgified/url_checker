@@ -1,15 +1,14 @@
 Looks for broken urls in vhf/free-programming-books
 
-
-if a link is broken, create an issue
-include original committer, bad url and which lang (add as label)
-
-
-todo
-
-* detect if the same issue has already been created previously (and avoid creating another)
-
-> tentative solution: look for open issues with "url_checker" label, avoid creating issues for urls that have already been reported. if a reported url is a false positive (ie link is not broken), just leave the issue open so that it wont be reported again.
+1. pulls down a clone of vhf/free-programming-books (or fast-forwards if already exists)
+2. uses URI::Find to pick out urls each file (more than one url per line is OK)
+3. test for broken urls using multiple methods to reduce false negatives
+  1. HEAD request
+  2. GET request
+  3. using curl
+  
+results are displayed at STDOUT
 
 
-* figure out how to run this in openshift
+
+to run this script, clone the repo, then type ./run
