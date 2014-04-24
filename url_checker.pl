@@ -92,16 +92,17 @@ $|=0;
 sub test_url{
 	my $retval;
 	my $url = shift @_;
+
+#try with HEAD (fastest)
 	my $req = HTTP::Request->new(HEAD => $url);
 	$req->header(Accept => "text/html, */*;q=0.1", referer => 'http://google.com');
 	my $res = $ua->request($req);
 
-### CHANGE HERE TO THE MAKE THE CHECK LESS STRINGENT 
-
 	if($res->is_success){
 		$retval = "good";
 	}else{
-#try one more time with GET
+
+#try again with GET
 		$req = HTTP::Request->new(GET => $url);
 		$req->header(Accept => "text/html, */*;q=0.1", referer => 'http://google.com');
 		$ua->timeout(60); #wait 60 for the download
@@ -109,7 +110,16 @@ sub test_url{
 		if($res->is_success){
 			$retval = "good";
 		}else{
-			$retval = $res->status_line;
+
+#try again with curl
+#beerpla.net/2010/06/10/how-to-display-just-the-http-response-code-in-cli-curl/
+			my $http_code = `curl --max-time 60 -k -sL -w "%{http_code}" $url -o /dev/null`;
+			if ($http_code eq '200'){
+				$retval = "good";
+			}else{
+				#we tried multiple ways to get to the url but we failed
+				$retval = $res->status_line;
+			}
 		}
 	}
 	return $retval;

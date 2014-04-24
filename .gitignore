@@ -1,5 +1,5 @@
 output_cron
 free-programming-books/
-output.txt
+output*.txt
 a.pl
 cookies.txt
