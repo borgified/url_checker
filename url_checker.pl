@@ -24,6 +24,7 @@ my @books = <free-programming-books*.md>;
 #gotta add 2 more books that dont conform to the usual naming convention
 push(@books,'free-programming-interactive-tutorials-en.md');
 push(@books,'javascript-frameworks-resources.md');
+push(@books,'free-courses-en.md');
 # @books now contains all the different "books".md
 
 
