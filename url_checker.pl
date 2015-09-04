@@ -68,7 +68,7 @@ foreach my $book (keys %db){
 		my $finder = URI::Find::UTF8->new( sub {
 				my($uri) = shift;
 				my $result = &test_url($uri);
-				print "$result $uri\n";
+				print "+ [ ] $result $uri\n";
 			});
 
 		$finder->find(\$line);
