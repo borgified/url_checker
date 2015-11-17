@@ -9,6 +9,6 @@ Looks for broken urls in vhf/free-programming-books
   
 results are displayed at STDOUT
 
+to install dependencies needed by this script: `cpan TAP::Harness::Env && cpan URI::Find::UTF8`
 
-
-to run this script, clone the repo, then type ./run
+to run this script type ./run
