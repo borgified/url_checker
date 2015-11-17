@@ -19,25 +19,19 @@ if(-d "free-programming-books"){
 }
 
 chdir("free-programming-books");
-my @books = <free-programming-books*.md>;
-
-#gotta add 2 more books that dont conform to the usual naming convention
-push(@books,'free-programming-interactive-tutorials-en.md');
-push(@books,'javascript-frameworks-resources.md');
-push(@books,'free-courses-en.md');
-# @books now contains all the different "books".md
+my @files = <*.md>;
 
 
 my %db;
 
 
-#read all the contents of each *.md file inside @books and put it into %db
-foreach my $book (@books){
+#read all the contents of each *.md file inside @files and put it into %db
+foreach my $file (@files){
 	local $/ = undef;
-	open FILE, "$book" or die "Couldn't open file: $!";
+	open FILE, "$file" or die "Couldn't open file: $!";
 	my $content = <FILE>;
 	close FILE;
-	$db{$book}{"content"}=$content;
+	$db{$file}{"content"}=$content;
 }
 
 chdir("../.");
@@ -55,12 +49,12 @@ $ua->cookie_jar($cookies);
 #$ua->show_progress(1);
 
 $|=1;
-foreach my $book (keys %db){
+foreach my $file (keys %db){
 
-	print "$book\n";
+	print "$file\n";
 
 #all content from each book goes into @content, each array item = 1 line
-	my @content = split("\n", $db{$book}{'content'});
+	my @content = split("\n", $db{$file}{'content'});
 
 	foreach my $line (@content){
 		#if there are more than one url in one line, this will detect it too and
