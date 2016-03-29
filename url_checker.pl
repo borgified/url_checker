@@ -6,6 +6,8 @@ use LWP::UserAgent;
 use HTTP::Cookies;
 use URI::Find::UTF8;
 
+open(OUTPUT,'>',"output.txt") or die "$!";
+
 #check if we have the original vhf/free-programming-books repo pulled down
 #if not, do it, if so, grab the latest version
 
@@ -58,6 +60,7 @@ $|=1;
 foreach my $book (keys %db){
 
 	print "$book\n";
+	print OUTPUT "$book\n";
 
 #all content from each book goes into @content, each array item = 1 line
 	my @content = split("\n", $db{$book}{'content'});
@@ -69,11 +72,15 @@ foreach my $book (keys %db){
 				my($uri) = shift;
 				my $result = &test_url($uri);
 				print "+ [ ] $result $uri\n";
+        if($result ne 'good'){
+				  print OUTPUT "+ [ ] $result $uri\n";
+        }
 			});
 
 		$finder->find(\$line);
 	}
 	print "\n";
+	print OUTPUT "\n";
 }
 $|=0;
 
