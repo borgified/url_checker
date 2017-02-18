@@ -1,0 +1,16 @@
+#!/bin/bash -e
+
+docker pull borgified/url_checker
+
+CONTAINER=$(docker run -d borgified/url_checker)
+
+#https://github.com/jefferyb/docker-polymer-cli/issues/1
+trap ctrl_c INT
+function ctrl_c {
+  echo "Killing container..."
+  docker kill $CONTAINER
+  docker rm $CONTAINER
+}
+
+docker logs -f $CONTAINER
+docker rm $CONTAINER
