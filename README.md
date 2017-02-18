@@ -10,7 +10,7 @@ Looks for broken urls in vhf/free-programming-books
 results are displayed at STDOUT
 
 
-There are *THREE* ways to run this.
+There are **THREE** ways to run this.
 
 1. run pre-built [docker](https://docs.docker.com/engine/getstarted/step_one/#/step-1-get-docker) container from dockerhub `./prun`
 2. build [docker](https://docs.docker.com/engine/getstarted/step_one/#/step-1-get-docker) container locally and run it `./drun`
