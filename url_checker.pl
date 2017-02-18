@@ -12,10 +12,10 @@ use URI::Find::UTF8;
 if(-d "free-programming-books"){
 	chdir("free-programming-books");
 	#grab the latest changes
-	system("git pull origin master");
+	system("git pull origin master >/dev/null 2>&1");
 	chdir("../.");
 }else{
-	system("git clone https://github.com/vhf/free-programming-books.git");
+	system("git clone https://github.com/vhf/free-programming-books.git >/dev/null 2>&1");
 }
 
 chdir("free-programming-books");
