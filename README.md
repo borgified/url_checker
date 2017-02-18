@@ -12,6 +12,6 @@ results are displayed at STDOUT
 
 There are **THREE** ways to run this.
 
-1. run pre-built [docker](https://docs.docker.com/engine/getstarted/step_one/#/step-1-get-docker) container from dockerhub `./prun`
+1. run pre-built [dockerhub](https://hub.docker.com/r/borgified/url_checker/) image (you still need to install docker) `./prun`
 2. build [docker](https://docs.docker.com/engine/getstarted/step_one/#/step-1-get-docker) container locally and run it `./drun`
 3. run as a perl script (you need to install dependencies) `./run`
