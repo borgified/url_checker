@@ -32,7 +32,7 @@ my %db;
 
 
 #read all the contents of each *.md file inside @books and put it into %db
-foreach my $book (@books){
+foreach my $book (sort @books){
 	local $/ = undef;
 	open FILE, "$book" or die "Couldn't open file: $!";
 	my $content = <FILE>;
