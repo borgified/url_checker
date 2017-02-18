@@ -12,11 +12,6 @@ results are displayed at STDOUT
 
 There are THREE ways to run this.
 
-1. run pre-built docker container [you must have Docker installed](https://docs.docker.com/engine/getstarted/step_one/#/step-1-get-docker)
-`./prun`
-
-2. build docker container, and run it [you must have Docker installed](https://docs.docker.com/engine/getstarted/step_one/#/step-1-get-docker)
-`./drun`
-
-3. run as a perl script (you need to install dependencies, see top of url_checker.pl)
-`./run`
+1. run pre-built [docker](https://docs.docker.com/engine/getstarted/step_one/#/step-1-get-docker) container from dockerhub `./prun`
+2. build [docker](https://docs.docker.com/engine/getstarted/step_one/#/step-1-get-docker) container locally and run it `./drun`
+3. run as a perl script (you need to install dependencies) `./run`
