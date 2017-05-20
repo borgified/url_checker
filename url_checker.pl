@@ -22,9 +22,17 @@ chdir("free-programming-books");
 my @books = <free-programming-books*.md>;
 
 #gotta add 2 more books that dont conform to the usual naming convention
-push(@books,'free-programming-interactive-tutorials-en.md');
-push(@books,'javascript-frameworks-resources.md');
 push(@books,'free-courses-en.md');
+push(@books,'free-podcasts-screencasts-cs.md');
+push(@books,'free-podcasts-screencasts-en.md');
+push(@books,'free-podcasts-screencasts-pt_BR.md');
+push(@books,'free-podcasts-screencasts-ru.md');
+push(@books,'free-podcasts-screencasts-se.md');
+push(@books,'javascript-frameworks-resources-pt_BR.md');
+push(@books,'javascript-frameworks-resources.md');
+push(@books,'problem-sets-competitive-programming.md');
+push(@books,'free-programming-interactive-tutorials-en.md');
+push(@books,'free-programming-playgrounds.md');
 # @books now contains all the different "books".md
 
 
