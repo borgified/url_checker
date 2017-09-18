@@ -15,7 +15,7 @@ if(-d "free-programming-books"){
 	system("git pull origin master >/dev/null 2>&1");
 	chdir("../.");
 }else{
-	system("git clone https://github.com/vhf/free-programming-books.git >/dev/null 2>&1");
+	system("git clone https://github.com/EbookFoundation/free-programming-books.git >/dev/null 2>&1");
 }
 
 chdir("free-programming-books");
