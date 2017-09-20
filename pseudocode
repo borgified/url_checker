@@ -1,0 +1,70 @@
+
+-----------------
+database_up.pl
+-----------------
+get latest collection of .md files
+store content into array @content, splitting by lines
+send each line in @content to $finder->find() to extract $uri
+upsert uri to database
+
+-----------------
+url_checker.pl
+-----------------
+Randomly pull documents from database 
+For each doc, check url depending on success_lvl and timestamp of document 
+
+# use Switch;
+foreach document
+			access success_lvl
+			access timestamp
+		
+		# test new url
+			if(timestamp doesn't exist){		
+						test_url();
+						update document's timestamp
+						if(test is good) {
+									increase success_level in database if not LEVEL_FREQ_6;
+						}else{
+									decrease success_level in database if not LEVEL_FREQ_0;
+						}
+			}else	{		
+		# test existing url			
+						calculate idle_time = current_time - timestamp
+						switch(success_level) {
+									case 0:		{	do nothing;}	
+									case 1-6: {	if(idle_time > LEVEL_FREQ) {
+																		test_url();
+																		update database timestamp
+																		if(test is good) {
+																					increase success_level in database if not LEVEL_FREQ_6;
+																		}else{
+																					decrease success_level in database if not LEVEL_FREQ_0;	
+																		}
+																}
+														}
+						}	
+			}
+}
+
+success levels
+0 - dead 
+1 - problematic (check freq 1 wk)			# make sure before making inactive 
+2 - problematic (check freq 1 wk) 
+3 - problematic (check freq 1 wk) 
+4 - average 		(check freq 72 hrs)
+5 - good 				(check freq 48 hrs)
+6 - excellent		(check freq 24 hrs)
+
+success levels
+-2
+-1	
+ 0	Start level	
+ 1	10+ consecutive successes
+ 2	20+ consecutive successes
+
+Use timestamp to determine length of time between checks.  Check fail level to determine length of time.
+Write good and bad urls to separate outfiles
+
+
+database fields
+url		success_lvl		timestamp(to determine lapsed time since last check)		
