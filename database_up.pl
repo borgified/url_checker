@@ -2,16 +2,15 @@
 
 use warnings;
 use strict;
-#use LWP::UserAgent;
-#use HTTP::Cookies;
 use URI::Find::UTF8;
 use MongoDB();
-use Data::Dumper qw(Dumper);
-						      
+
+# Connect database
 my $client = MongoDB->connect();
 my $db = $client->get_database( 'data' );
 my $url_collection = $db->get_collection('urls');
 
+#### Commented out to for testing
 #check if we have the original vhf/free-programming-books repo pulled down
 #if not, do it, if so, grab the latest version
 
@@ -50,39 +49,37 @@ my %db;
 
 #read all the contents of each *.md file inside @books and put it into %db
 foreach my $book (sort @books){
-	local $/ = undef;
-	open FILE, "$book" or die "Couldn't open file: $!";
-	my $content = <FILE>;
-	close FILE;
-	$db{$book}{"content"}=$content;
+  local $/ = undef;
+  open FILE, "$book" or die "Couldn't open file: $!";
+  my $content = <FILE>;
+  close FILE;
+  $db{$book}{"content"}=$content;
 }
 
 chdir("../.");
 
 $|=1;
 
-my $SUCCESS_LVL6 = 6; 
+my $SUCCESS_LVL6 = 6;   # default success_lvl for all new urls
+my $setOnInsert;
 foreach my $book (keys %db){
 
 #all content from each book goes into @content, each array item = 1 line
-	my @content = split("\n", $db{$book}{'content'});
+  my @content = split("\n", $db{$book}{'content'});
 
-	my $setOnInsert;
-	foreach my $line (@content){
-		#if there are more than one url in one line, this will detect it too and
-		#add them as separate entries into @uris
-		my $finder = URI::Find::UTF8->new( sub {
-				my($uri) = shift;
-				
-				# upsert to database	
-				$url_collection->update_one(	{"url" => "$uri"},
-				  														{ '$setOnInsert' => { url => "$uri", success_lvl => $SUCCESS_LVL6}},
-																			{ 'upsert' => 1 }
-				);
-			
-			});
-
-		$finder->find(\$line);
-	}
+  foreach my $line (@content){
+#if there are more than one url in one line, this will detect it too and
+#add them as separate entries into @uris
+    my $finder = URI::Find::UTF8->new( sub {
+        my($uri) = shift;
+# upsert to database	
+        $url_collection->update_one(	
+            {"url" => "$uri"},
+            { '$setOnInsert' => { url => "$uri", success_lvl => $SUCCESS_LVL6}},
+            { 'upsert' => true }
+            );
+        });
+    $finder->find(\$line);
+  }
 }
 $|=0;
