@@ -24,7 +24,6 @@ my $client = MongoDB->connect();
 my $db = $client->get_database( 'data' );
 my $url_collection = $db->get_collection('urls');
 
-
 # Select $num random urls from database 
 my $num=3;	
 my @url;
@@ -61,7 +60,7 @@ foreach my $url (@url){
   my $timestamp = $doc->{'timestamp'};
 
 
-# Case: New Url
+### Case: New Url ###
   if(!$timestamp) { 
     print "Testing new url\n";
     my $result = test_url($url);
@@ -106,19 +105,6 @@ foreach my $url (@url){
       case $SUCCESS_LVL5: { 		}
       case $SUCCESS_LVL6: { 		}
     }
-
-#					print "Timestamp: $timestamp\n";
-#					if ($result eq "good") {
-#							print "good!!!\n";
-#							if ($level != $SUCCESS_LVL6) {
-#									# increase success_lvl
-#									print "increasing\n";
-#									$url_collection->update_one	(	{ "url" => $url},
-#              																	{ '$inc' =>	{ success_lvl => 1 }}, 
-#		          																	{ 'upsert' => 1 }
-#																							);
-#							}
-#					}
   }
 } # close foreach	
 
@@ -162,8 +148,10 @@ sub test_url{
   }
   return $retval;
 }
+
+
 #update_level(test_url);
-#input: result of test_url
+#input: result of test_url  (note: uses global vars)
 sub update_level() {
   my($result)=@_; 
   if($result eq "good") {
@@ -182,22 +170,3 @@ sub update_level() {
 }
 
 __END__
-################################################
-#sub test_url {
-
-#	foreach my $key (keys %$doc ) {
-#	     my $val=$doc->{$key};
-#			      print "$key->$val\n";
-#						  }
-#							  print "\n";
-#								}
-
-
-#my $cursor=$urls_coll->find->skip(5);
-#while(my $doc=$cursor->next) {
-#	foreach my $key (keys %$doc ){
-#		if($key eq "url"){
-#			print "$doc->{$key}\n";
-#		}
-#	}	
-#}
