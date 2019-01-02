@@ -1,3 +1,5 @@
-language: generic
+language: python
+script:
+  - ./test.py
 addons:
   srcclr: true
