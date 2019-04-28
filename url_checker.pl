@@ -10,7 +10,7 @@ use URI::Find::UTF8;
 system("git clone https://github.com/EbookFoundation/free-programming-books.git /tmp/fpb");
 
 chdir("/tmp/fpb");
-my @books = <free-programming-books-*.md>;
+my @books = <free-programming-books*.md>;
 
 my %db;
 
