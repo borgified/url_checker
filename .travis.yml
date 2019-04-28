@@ -1,0 +1,11 @@
+language: perl
+os: linux
+
+install:
+  - curl -L http://cpanmin.us | perl - --self-upgrade
+  - cpanm LWP::UserAgent
+  - cpanm URI::Find::UTF8
+  - cpanm LWP::Protocol::https
+
+script:
+  - ./testone.pl
