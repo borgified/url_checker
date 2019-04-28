@@ -20,12 +20,12 @@ if(-d "free-programming-books"){
 
 chdir("free-programming-books");
 my @books;
-push(@books, 'free-programming-books.md');
+my @books = <free-*.md>;
 
 #gotta add 2 more books that dont conform to the usual naming convention
-#push(@books,'javascript-frameworks-resources-pt_BR.md');
-#push(@books,'javascript-frameworks-resources.md');
-#push(@books,'problem-sets-competitive-programming.md');
+push(@books,'javascript-frameworks-resources-pt_BR.md');
+push(@books,'javascript-frameworks-resources.md');
+push(@books,'problem-sets-competitive-programming.md');
 # @books now contains all the different "books".md
 
 
@@ -69,7 +69,11 @@ foreach my $book (keys %db){
 		my $finder = URI::Find::UTF8->new( sub {
 				my($uri) = shift;
 				my $result = &test_url($uri);
-				print "+ [ ] $result $uri\n";
+                                  if($result eq 'good'){
+                                    next;
+                                  }else{
+				    print "+ [ ] $result $uri\n";
+                                  }
 			});
 
 		$finder->find(\$line);
