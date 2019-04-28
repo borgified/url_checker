@@ -51,9 +51,7 @@ foreach my $book (keys %db){
 		my $finder = URI::Find::UTF8->new( sub {
 				my($uri) = shift;
 				my $result = &test_url($uri);
-                                  if($result eq 'good'){
-                                    next;
-                                  }else{
+                                  if($result ne 'good'){
 				    print "+ [ ] $result $uri\n";
                                   }
 			});
