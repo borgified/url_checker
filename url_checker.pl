@@ -6,31 +6,13 @@ use LWP::UserAgent;
 use HTTP::Cookies;
 use URI::Find::UTF8;
 
-#check if we have the original vhf/free-programming-books repo pulled down
-#if not, do it, if so, grab the latest version
 
-if(-d "free-programming-books"){
-	chdir("free-programming-books");
-	#grab the latest changes
-	system("git pull origin master");
-	chdir("../.");
-}else{
-	system("git clone https://github.com/EbookFoundation/free-programming-books.git");
-}
+system("git clone https://github.com/EbookFoundation/free-programming-books.git /tmp/fpb");
 
-chdir("free-programming-books");
-my @books;
-my @books = <free-*.md>;
-
-#gotta add 2 more books that dont conform to the usual naming convention
-push(@books,'javascript-frameworks-resources-pt_BR.md');
-push(@books,'javascript-frameworks-resources.md');
-push(@books,'problem-sets-competitive-programming.md');
-# @books now contains all the different "books".md
-
+chdir("/tmp/fpb");
+my @books = <free-programming-books-*.md>;
 
 my %db;
-
 
 #read all the contents of each *.md file inside @books and put it into %db
 foreach my $book (sort @books){
