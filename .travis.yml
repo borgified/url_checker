@@ -10,4 +10,4 @@ install:
   - cpanm LWP::Protocol::https
 
 script:
-  - ./testone.pl
+  - ./url_checker.pl
