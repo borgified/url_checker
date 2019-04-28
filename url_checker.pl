@@ -19,12 +19,13 @@ if(-d "free-programming-books"){
 }
 
 chdir("free-programming-books");
-my @books = <free-*.md>;
+my @books;
+push(@books, 'free-programming-books.md');
 
 #gotta add 2 more books that dont conform to the usual naming convention
-push(@books,'javascript-frameworks-resources-pt_BR.md');
-push(@books,'javascript-frameworks-resources.md');
-push(@books,'problem-sets-competitive-programming.md');
+#push(@books,'javascript-frameworks-resources-pt_BR.md');
+#push(@books,'javascript-frameworks-resources.md');
+#push(@books,'problem-sets-competitive-programming.md');
 # @books now contains all the different "books".md
 
 
