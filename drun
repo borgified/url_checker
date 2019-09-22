@@ -2,4 +2,4 @@
 
 docker build -t url_checker .
 git clone https://github.com/EbookFoundation/free-programming-books.git /tmp/workdir/fpb
-docker run -v /tmp/workdir/fpb:/tmp/fpb -it url_checker /tmp/fpb/free-programming-books.md
+docker run -v /tmp/workdir/fpb:/tmp/fpb -it url_checker $INPUT

@@ -1,8 +1,12 @@
 language: minimal
 os: linux
 
+install:
+  - docker build -t url_checker .
+  - git clone https://github.com/EbookFoundation/free-programming-books.git /tmp/workdir/fpb
+
 script:
-  - ./drun $INPUT
+  - docker run -v /tmp/workdir/fpb:/tmp/fpb -it url_checker $INPUT
 
 matrix:
   include:
