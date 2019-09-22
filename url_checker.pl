@@ -7,7 +7,7 @@ use HTTP::Cookies;
 use URI::Find::UTF8;
 
 
-system("git clone https://github.com/EbookFoundation/free-programming-books.git /tmp/fpb");
+#system("git clone https://github.com/EbookFoundation/free-programming-books.git /tmp/fpb");
 
 chdir("/tmp/fpb");
 my @books = <$ARGV[0]>;

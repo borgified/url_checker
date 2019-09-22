@@ -1,16 +1,5 @@
 #!/bin/bash -e
 
-docker build -q -t url_checker .
-
-CONTAINER=$(docker run -d -t url_checker)
-
-#https://github.com/jefferyb/docker-polymer-cli/issues/1
-trap ctrl_c INT
-function ctrl_c {
-  echo "Killing container..."
-  docker kill $CONTAINER
-  docker rm $CONTAINER
-}
-
-docker logs -f $CONTAINER
-docker rm $CONTAINER
+docker build -t url_checker .
+git clone https://github.com/EbookFoundation/free-programming-books.git /tmp/workdir/fpb
+docker run -v /tmp/workdir/fpb:/tmp/fpb -it url_checker /tmp/fpb/free-programming-books.md

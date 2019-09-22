@@ -1,14 +1,8 @@
-language: perl
+language: minimal
 os: linux
 
-install:
-  - curl -L http://cpanmin.us | perl - --self-upgrade
-  - sudo cpanm LWP::UserAgent
-  - sudo cpanm URI::Find::UTF8
-  - sudo cpanm LWP::Protocol::https
-
 script:
-  - ./url_checker.pl $INPUT
+  - ./drun $INPUT
 
 matrix:
   include:
