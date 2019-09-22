@@ -5,9 +5,9 @@ os: linux
 
 install:
   - curl -L http://cpanmin.us | perl - --self-upgrade
-  - cpanm LWP::UserAgent
-  - cpanm URI::Find::UTF8
-  - cpanm LWP::Protocol::https
+  - sudo cpanm LWP::UserAgent
+  - sudo cpanm URI::Find::UTF8
+  - sudo cpanm LWP::Protocol::https
 
 script:
   - ./url_checker.pl $INPUT
