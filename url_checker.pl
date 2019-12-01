@@ -1,5 +1,6 @@
 #!/usr/bin/env perl
 
+use utf8;
 use warnings;
 use strict;
 use LWP::UserAgent;
@@ -17,7 +18,7 @@ my %db;
 #read all the contents of each *.md file inside @books and put it into %db
 foreach my $book (sort @books){
 	local $/ = undef;
-	open FILE, "$book" or die "Couldn't open file: $!";
+	open FILE, '<:encoding(UTF-8)', "$book" or die "Couldn't open file: $!";
 	my $content = <FILE>;
 	close FILE;
 	$db{$book}{"content"}=$content;
